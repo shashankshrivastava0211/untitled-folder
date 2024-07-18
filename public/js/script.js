@@ -12,7 +12,7 @@ socket.on('connect', () => {
     // Add the OpenStreetMap tiles
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        attribution: 'shashank shrivastava'
     }).addTo(map);
 
     // Markers for users' locations
@@ -27,13 +27,16 @@ socket.on('connect', () => {
             // Update the user's marker position or create it if it doesn't exist
             if (markers[socket.id]) {
                 markers[socket.id].setLatLng([latitude, longitude]);
-                markers[socket.id].bindPopup(deviceName).openPopup();
             } else {
                 markers[socket.id] = L.marker([latitude, longitude])
                     .addTo(map)
                     .bindPopup(deviceName)
                     .openPopup();
             }
+
+            // Center the map on the user's location
+            map.setView([latitude, longitude], 15);
+
         }, 
         (error) => {
             console.log(error);
